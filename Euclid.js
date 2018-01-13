@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2014-06-05 07:32:38"
+	"lastUpdated": "2017-11-26 09:30:50"
 }
 
 /*
@@ -85,7 +85,13 @@ function doWeb(doc,url)
 				if(item.extra) item.extra += '\n';
 				item.extra += 'Zbl: ' + ZU.trimInternal(zbl);
 			}
-			item.libraryCatalog = "Project Euclid"
+			item.libraryCatalog = "Project Euclid";
+			//Set the Referer for the HTTP request downloading the PDF;
+			//this is necessary because Euclid blocks downloads that don't do this
+			for (var i in item.attachments) {
+				if (item.attachments[i].mimeType == "application/pdf")
+					item.attachments[i].http_referer = url;
+			}
 			item.complete();
 		});
 		translator.translate();
@@ -94,7 +100,7 @@ function doWeb(doc,url)
 var testCases = [
 	{
 		"type": "web",
-		"url": "http://projecteuclid.org/DPubS?service=UI&version=1.0&verb=Display&handle=euclid.jsl/1309952534",
+		"url": "https://projecteuclid.org/DPubS?service=UI&version=1.0&verb=Display&handle=euclid.jsl/1309952534",
 		"items": [
 			{
 				"itemType": "journalArticle",
@@ -117,12 +123,13 @@ var testCases = [
 				"libraryCatalog": "Project Euclid",
 				"pages": "1061-1074",
 				"publicationTitle": "Journal of Symbolic Logic",
-				"url": "http://projecteuclid.org/euclid.jsl/1309952534",
+				"url": "https://projecteuclid.org/euclid.jsl/1309952534",
 				"volume": "76",
 				"attachments": [
 					{
 						"title": "Full Text PDF",
-						"mimeType": "application/pdf"
+						"mimeType": "application/pdf",
+						"http_referer": "https://projecteuclid.org/DPubS?service=UI&version=1.0&verb=Display&handle=euclid.jsl/1309952534"
 					},
 					{
 						"title": "Snapshot"
@@ -136,7 +143,7 @@ var testCases = [
 	},
 	{
 		"type": "web",
-		"url": "http://projecteuclid.org/DPubS?service=UI&version=1.0&verb=Display&handle=euclid.aoas/1310562719",
+		"url": "https://projecteuclid.org/DPubS?service=UI&version=1.0&verb=Display&handle=euclid.aoas/1310562719",
 		"items": [
 			{
 				"itemType": "journalArticle",
@@ -184,22 +191,31 @@ var testCases = [
 				"libraryCatalog": "Project Euclid",
 				"pages": "1207-1228",
 				"publicationTitle": "The Annals of Applied Statistics",
-				"url": "http://projecteuclid.org/euclid.aoas/1310562719",
+				"url": "https://projecteuclid.org/euclid.aoas/1310562719",
 				"volume": "5",
 				"attachments": [
 					{
 						"title": "Full Text PDF",
-						"mimeType": "application/pdf"
+						"mimeType": "application/pdf",
+						"http_referer": "https://projecteuclid.org/DPubS?service=UI&version=1.0&verb=Display&handle=euclid.aoas/1310562719"
 					},
 					{
 						"title": "Snapshot"
 					}
 				],
 				"tags": [
-					"Kalman filter",
-					"Magnetoencephalography",
-					"fixed interval smoother",
-					"source localization"
+					{
+						"tag": "Kalman filter"
+					},
+					{
+						"tag": "Magnetoencephalography"
+					},
+					{
+						"tag": "fixed interval smoother"
+					},
+					{
+						"tag": "source localization"
+					}
 				],
 				"notes": [],
 				"seeAlso": []
